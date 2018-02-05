@@ -42,7 +42,7 @@ class TochkaEnv
     /**
      * @throws \Exception
      */
-    public function setAll(): bool
+    public function toAll(): bool
     {
         if (empty($this->preparedVars)) {
             throw new \Exception('Nothing todo');
@@ -53,6 +53,74 @@ class TochkaEnv
                 && $this->setServer($name, $value, $this->isNeedToOverride)
                 && $this->setEnv($name, $value, $this->isNeedToOverride)
                 && $this->setConst($name, $value);
+        }
+        return $isSaved;
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function toEnvironment()
+    {
+        if (empty($this->preparedVars)) {
+            throw new \Exception('Nothing todo');
+        }
+        $isSaved = false;
+
+        foreach ($this->preparedVars as $name => $value) {
+            $isSaved = $this->setEnvironment($name, $value, $this->isNeedToOverride);
+        }
+        return $isSaved;
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function toServer()
+    {
+        if (empty($this->preparedVars)) {
+            throw new \Exception('Nothing todo');
+        }
+        $isSaved = false;
+
+        foreach ($this->preparedVars as $name => $value) {
+            $isSaved = $this->setServer($name, $value, $this->isNeedToOverride);
+        }
+        return $isSaved;
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function toEnv()
+    {
+        if (empty($this->preparedVars)) {
+            throw new \Exception('Nothing todo');
+        }
+        $isSaved = false;
+
+        foreach ($this->preparedVars as $name => $value) {
+            $isSaved = $this->setEnv($name, $value, $this->isNeedToOverride);
+        }
+        return $isSaved;
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function toConst()
+    {
+        if (empty($this->preparedVars)) {
+            throw new \Exception('Nothing todo');
+        }
+        $isSaved = false;
+
+        foreach ($this->preparedVars as $name => $value) {
+            $isSaved = $this->setConst($name, $value);
         }
         return $isSaved;
     }
