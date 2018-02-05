@@ -51,7 +51,8 @@ class TochkaEnv
         foreach ($this->preparedVars as $name => $value) {
             $isSaved = $this->setEnvironment($name, $value, $this->isNeedToOverride)
                 && $this->setServer($name, $value, $this->isNeedToOverride)
-                && $this->setEnv($name, $value, $this->isNeedToOverride);
+                && $this->setEnv($name, $value, $this->isNeedToOverride)
+                && $this->setConst($name, $value);
         }
         return $isSaved;
     }
@@ -67,7 +68,7 @@ class TochkaEnv
         if (\getenv($name) && !$needToOverride) {
             return false;
         }
-        return putenv("$name=$value");
+        return \putenv("$name=$value");
     }
 
     /**
@@ -100,5 +101,18 @@ class TochkaEnv
         unset($_SERVER[$name]);
         $_SERVER[$name] = $value;
         return isset($_SERVER[$name]);
+    }
+
+    /**
+     * @param string $name
+     * @param $value
+     * @return bool
+     */
+    private function setConst(string $name, $value)
+    {
+        if (defined($name)) {
+            return false;
+        }
+        return define($name, $value);
     }
 }
