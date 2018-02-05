@@ -25,7 +25,7 @@ class TochkaEnv
      */
     public function __construct(string $filePath, string $fileName = '.env')
     {
-        $this->preparedVars = (new Reader($filePath, $fileName))->getContent();
+        $this->preparedVars = (new Loader($filePath, $fileName))->getContent();
     }
 
 
@@ -42,7 +42,7 @@ class TochkaEnv
     /**
      * @throws \Exception
      */
-    public function setAll()
+    public function setAll(): bool
     {
         if (empty($this->preparedVars)) {
             throw new \Exception('Nothing todo');

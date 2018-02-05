@@ -6,7 +6,7 @@ namespace TochkaEnv;
  * Class Reader
  * @package TochkaEnv
  */
-class Reader
+class Loader
 {
     /**
      * @var string
