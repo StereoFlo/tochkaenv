@@ -62,7 +62,7 @@ class TochkaEnv
     /**
      * @return bool
      */
-    public function toEnvironment()
+    public function toEnvironment(): bool
     {
         if (empty($this->preparedVars)) {
             return false;
@@ -78,7 +78,7 @@ class TochkaEnv
     /**
      * @return bool
      */
-    public function toServer()
+    public function toServer(): bool
     {
         if (empty($this->preparedVars)) {
             return false;
@@ -94,7 +94,7 @@ class TochkaEnv
     /**
      * @return bool
      */
-    public function toEnv()
+    public function toEnv(): bool
     {
         if (empty($this->preparedVars)) {
             return false;
@@ -110,7 +110,7 @@ class TochkaEnv
     /**
      * @return bool
      */
-    public function toConst()
+    public function toConst(): bool
     {
         if (empty($this->preparedVars)) {
             return false;
@@ -174,7 +174,7 @@ class TochkaEnv
      * @param $value
      * @return bool
      */
-    private function setConst(string $name, $value)
+    private function setConst(string $name, $value): bool
     {
         if (\defined($name)) {
             return false;
