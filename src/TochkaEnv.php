@@ -23,9 +23,11 @@ class TochkaEnv
      * @param string $fileName
      * @throws \Exception
      */
-    public function __construct(string $filePath, string $fileName = '.env')
+    public function __construct(string $filePath = '', string $fileName = '.env')
     {
-        $this->preparedVars = (new Loader($filePath, $fileName))->getContent();
+        if ($filePath) {
+            $this->preparedVars = (new Loader($filePath, $fileName))->getContent();
+        }
     }
 
 
@@ -40,12 +42,12 @@ class TochkaEnv
     }
 
     /**
-     * @throws \Exception
+     * @return bool
      */
     public function toAll(): bool
     {
         if (empty($this->preparedVars)) {
-            throw new \Exception('Nothing todo');
+            return false;
         }
         $isSaved = false;
         foreach ($this->preparedVars as $name => $value) {
@@ -59,12 +61,11 @@ class TochkaEnv
 
     /**
      * @return bool
-     * @throws \Exception
      */
     public function toEnvironment()
     {
         if (empty($this->preparedVars)) {
-            throw new \Exception('Nothing todo');
+            return false;
         }
         $isSaved = false;
 
@@ -76,12 +77,11 @@ class TochkaEnv
 
     /**
      * @return bool
-     * @throws \Exception
      */
     public function toServer()
     {
         if (empty($this->preparedVars)) {
-            throw new \Exception('Nothing todo');
+            return false;
         }
         $isSaved = false;
 
@@ -93,12 +93,11 @@ class TochkaEnv
 
     /**
      * @return bool
-     * @throws \Exception
      */
     public function toEnv()
     {
         if (empty($this->preparedVars)) {
-            throw new \Exception('Nothing todo');
+            return false;
         }
         $isSaved = false;
 
@@ -110,12 +109,11 @@ class TochkaEnv
 
     /**
      * @return bool
-     * @throws \Exception
      */
     public function toConst()
     {
         if (empty($this->preparedVars)) {
-            throw new \Exception('Nothing todo');
+            return false;
         }
         $isSaved = false;
 
@@ -178,9 +176,9 @@ class TochkaEnv
      */
     private function setConst(string $name, $value)
     {
-        if (defined($name)) {
+        if (\defined($name)) {
             return false;
         }
-        return define($name, $value);
+        return \define($name, $value);
     }
 }
