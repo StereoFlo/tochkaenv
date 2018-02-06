@@ -18,6 +18,17 @@ class TochkaEnv
     private $isNeedToOverride = false;
 
     /**
+     * @param string $filePath
+     * @param string $fileName
+     * @return TochkaEnv
+     * @throws \Exception
+     */
+    public static function create(string $filePath = '', string $fileName = '.env')
+    {
+        return new self($filePath, $fileName);
+    }
+
+    /**
      * TochkaEnv constructor.
      * @param string $filePath
      * @param string $fileName
