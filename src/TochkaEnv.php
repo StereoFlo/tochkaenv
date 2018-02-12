@@ -36,7 +36,7 @@ class TochkaEnv
      */
     public function __construct(string $filePath = '', string $fileName = '.env')
     {
-        if ($filePath) {
+        if (!empty($filePath)) {
             $this->preparedVars = (new Loader($filePath, $fileName))->getContent();
         }
     }
