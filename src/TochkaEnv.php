@@ -23,7 +23,7 @@ class TochkaEnv
      * @return TochkaEnv
      * @throws \Exception
      */
-    public static function create(string $filePath = '', string $fileName = '.env')
+    public static function create(string $filePath = '', string $fileName = '.env'): self
     {
         return new self($filePath, $fileName);
     }
