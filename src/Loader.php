@@ -2,6 +2,14 @@
 
 namespace TochkaEnv;
 
+use Exception;
+use TochkaEnv\Exceptions\FileNotFoundException;
+use function explode;
+use function file_exists;
+use function file_get_contents;
+use function strtolower;
+use function trim;
+
 /**
  * Class Reader
  * @package TochkaEnv
@@ -27,12 +35,14 @@ class Loader
      * Reader constructor.
      * @param string $filePath
      * @param string $fileName
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(string $filePath, string $fileName = '.env')
     {
-        if (!\file_exists($filePath . '/' . $fileName)) {
-            throw new \Exception('cant read a file');
+        $fullPath = $filePath . DIRECTORY_SEPARATOR . $fileName;
+
+        if (!file_exists($fullPath)) {
+            throw new FileNotFoundException('cant read a file: ' . $fullPath);
         }
         $this->filePath = $filePath;
         $this->fileName = $fileName;
@@ -52,8 +62,8 @@ class Loader
      */
     public function fillContent(): self
     {
-        $fileContent = \file_get_contents($this->filePath . '/' . $this->fileName);
-        $fileContent = \explode("\n", $fileContent);
+        $fileContent = file_get_contents($this->filePath . '/' . $this->fileName);
+        $fileContent = explode("\n", $fileContent);
         if (empty($fileContent)) {
             return $this;
         }
@@ -63,7 +73,7 @@ class Loader
                 continue;
             }
 
-            list($name, $value) = \explode('=', $item);
+            list($name, $value) = explode('=', $item);
 
             $name = $this->sanitize($name);
             if (empty($name)) {
@@ -79,11 +89,12 @@ class Loader
 
     /**
      * @param mixed $val
+     *
      * @return mixed
      */
     private function checkForBool($val)
     {
-        switch (\strtolower($val)) {
+        switch (strtolower($val)) {
             case 'false':
                 return false;
             case 'true':
@@ -98,11 +109,11 @@ class Loader
      * @param string $charList
      * @return string
      */
-    private function sanitize($val, $charList = ''): string
+    private function sanitize($val, string $charList = ''): string
     {
         if (empty($charList)) {
-            return \trim($val);
+            return trim($val);
         }
-        return \trim($val, $charList);
+        return trim($val, $charList);
     }
 }
